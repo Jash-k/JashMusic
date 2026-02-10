@@ -6,7 +6,6 @@
  * Or deploy to Deno Deploy
  */
 
-import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
 import { YTMusic, YouTubeSearch, LastFM, fetchFromPiped, fetchFromInvidious, getLyrics, getTrendingMusic, getRadio, getTopArtists, getTopTracks, getArtistInfo, getTrackInfo, getSongComplete, getAlbumComplete, getArtistComplete, getFullChain } from "./lib.ts";
 import { html as uiHtml } from "./ui.ts";
 
@@ -399,5 +398,19 @@ function parseVideo(video: any, channelId: string, channelName: string): any {
   return { id, authorId: channelId, duration: duration.toString(), author: channelName, views: views.toString(), uploaded: uploaded.toString(), title, isShort: duration > 0 && duration <= 60, thumbnail: video?.thumbnail?.thumbnails?.slice(-1)[0]?.url || "" };
 }
 
-console.log(`Virome API running on http://localhost:${PORT}`);
-serve(handler, { port: PORT });
+// Main server initialization
+console.log(`🎵 Virome API v1.0`);
+console.log(`📍 Environment: ${Deno.env.get("DENO_DEPLOYMENT_ID") ? 'Deno Deploy' : 'Local Development'}`);
+console.log(`🌐 Port: ${PORT}`);
+
+// Use Deno.serve() with 0.0.0.0 binding for better compatibility
+Deno.serve({
+  port: PORT,
+  hostname: "0.0.0.0", // Bind to all network interfaces
+  handler,
+  onListen({ hostname, port }) {
+    console.log(`✅ Server ready at http://${hostname}:${port}`);
+    console.log(`📱 Local: http://localhost:${port}`);
+    console.log(`🌍 Network: http://0.0.0.0:${port}`);
+  },
+});
