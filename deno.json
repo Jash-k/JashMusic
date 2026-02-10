@@ -1,0 +1,27 @@
+{
+  "name": "@kirazul/music-api",
+  "version": "1.0.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read mod.ts",
+    "dev": "deno run --watch --allow-net --allow-env --allow-read mod.ts"
+  },
+  "imports": {
+    "std/": "https://deno.land/std@0.208.0/"
+  },
+  "compilerOptions": {
+    "strict": true
+  },
+  "deploy": {
+    "project": "85252de3-9b36-4d8b-b250-e491b4131838",
+    "exclude": [
+      "**/node_modules",
+      "Music/**",
+      "virome-music/**",
+      ".git/**",
+      ".vscode/**"
+    ],
+    "include": [],
+    "entrypoint": "mod.ts"
+  }
+}
