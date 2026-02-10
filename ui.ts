@@ -190,7 +190,7 @@ export const html = `<!DOCTYPE html>
       <img src="/assets/logo.png" alt="JaSH MusiC" class="logo-sm">
       <span class="brand">JaSH MusiC</span>
       <div class="search-bar">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search songs, artists, albums..." />
+        <input type="text" class="search-input" id="searchInput" placeholder="Search songs, artists, albums or paste YouTube URL..." />
         <span class="search-icon">🔍</span>
       </div>
       <div class="filter-pills">
@@ -504,12 +504,104 @@ export const html = `<!DOCTYPE html>
       performSearch(name, 'songs');
     }
 
+          // ========== UPDATED SEARCH SECTION - START ==========
+    
+    // Extract video ID from YouTube URL
+    function extractVideoId(input) {
+      if (!input) return null;
+      
+      // Already a video ID (11 characters, alphanumeric with _ and -)
+      if (/^[a-zA-Z0-9_-]{11}$/.test(input.trim())) {
+        return input.trim();
+      }
+      
+      // Extract from various YouTube URL formats
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
+        /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/v\/)([a-zA-Z0-9_-]{11})/,
+        /(?:\?v=|&v=)([a-zA-Z0-9_-]{11})/,
+      ];
+      
+      for (const pattern of patterns) {
+        const match = input.match(pattern);
+        if (match && match[1]) {
+          return match[1];
+        }
+      }
+      
+      return null;
+    }
+
+    // Play song directly from video ID or URL
+    async function playFromUrl(input) {
+      const videoId = extractVideoId(input);
+      
+      if (!videoId) {
+        alert('Invalid YouTube URL or video ID');
+        return;
+      }
+      
+      showResults();
+      document.getElementById('loadingState').style.display = 'block';
+      document.getElementById('resultsGrid').innerHTML = '';
+      
+      try {
+        const res = await fetch(\`/api/songs/\${videoId}\`);
+        const data = await res.json();
+        
+        if (data.success && data.song) {
+          searchResults = [{
+            videoId: data.song.videoId,
+            title: data.song.title || 'YouTube Video',
+            artists: data.artist?.name ? [{ name: data.artist.name }] : [{ name: 'Unknown Artist' }],
+            thumbnails: [{ url: data.song.thumbnail || \`https://img.youtube.com/vi/\${videoId}/mqdefault.jpg\` }],
+            duration: data.song.duration || '',
+            resultType: 'song'
+          }];
+        } else {
+          throw new Error('No metadata');
+        }
+      } catch (e) {
+        searchResults = [{
+          videoId: videoId,
+          title: 'YouTube Video',
+          artists: [{ name: 'Unknown Artist' }],
+          thumbnails: [{ url: \`https://img.youtube.com/vi/\${videoId}/mqdefault.jpg\` }],
+          duration: '',
+          resultType: 'video'
+        }];
+      }
+      
+      queue = searchResults;
+      currentIndex = 0;
+      
+      document.getElementById('resultsTitle').textContent = 'Direct Play';
+      document.getElementById('resultsCount').textContent = \`Video ID: \${videoId}\`;
+      renderResults();
+      
+      document.getElementById('loadingState').style.display = 'none';
+      
+      playTrack(0);
+    }
+
+    // Search input handler with YouTube URL support
     document.getElementById('searchInput').addEventListener('keypress', e => {
       if (e.key === 'Enter') {
         const query = e.target.value.trim();
-        if (query) performSearch(query, currentFilter);
+        if (!query) return;
+        
+        const videoId = extractVideoId(query);
+        if (videoId) {
+          playFromUrl(query);
+        } else {
+          performSearch(query, currentFilter);
+        }
       }
     });
+
+    // ========== UPDATED SEARCH SECTION - END ==========
 
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
