@@ -89,6 +89,30 @@ async function handler(req: Request): Promise<Response> {
         return new Response(logo, { headers: { "Content-Type": "image/png", ...corsHeaders } });
       } catch { return new Response("Logo not found", { status: 404 }); }
     }
+     // Director Images - ADD THIS NEW SECTION
+    if (pathname.startsWith("/assets/directors/")) {
+      try {
+        const imageName = pathname.split("/").pop();
+        const imagePath = new URL(`./assets/directors/${imageName}`, import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
+        const image = await Deno.readFile(imagePath);
+        
+        // Determine content type based on extension
+        const ext = imageName?.split(".").pop()?.toLowerCase();
+        const contentType = ext === "png" ? "image/png" : "image/jpeg";
+        
+        return new Response(image, { 
+          headers: { 
+            "Content-Type": contentType,
+            "Cache-Control": "public, max-age=31536000", // Cache for 1 year
+            ...corsHeaders 
+          } 
+        });
+      } catch { 
+        // Return placeholder if image not found
+        return new Response("Image not found", { status: 404 }); 
+      }
+    }
+
 
     if (pathname === "/favicon.ico") return new Response(null, { status: 204 });
     if (pathname === "/health") return json({ status: "ok" });

@@ -187,8 +187,8 @@ export const html = `<!DOCTYPE html>
   <!-- Header -->
   <header class="header">
     <div class="header-inner">
-      <img src="/assets/logo.png" alt="Virome" class="logo-sm">
-      <span class="brand">Virome</span>
+      <img src="/assets/logo.png" alt="JaSH MusiC" class="logo-sm">
+      <span class="brand">JaSH MusiC</span>
       <div class="search-bar">
         <input type="text" class="search-input" id="searchInput" placeholder="Search songs, artists, albums..." />
         <span class="search-icon">🔍</span>
@@ -311,32 +311,49 @@ export const html = `<!DOCTYPE html>
 
     // Tamil Music Directors Data
     const tamilDirectors = [
-      { name: 'Ilaiyaraaja', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ilaiyaraaja_at_Bharathi_film_launch.jpg/220px-Ilaiyaraaja_at_Bharathi_film_launch.jpg', query: 'Ilaiyaraaja' },
-      { name: 'A.R. Rahman', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/A._R._Rahman_in_2011.jpg/220px-A._R._Rahman_in_2011.jpg', query: 'A.R. Rahman' },
-      { name: 'Harris Jayaraj', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Harris_Jayaraj_2011.jpg/220px-Harris_Jayaraj_2011.jpg', query: 'Harris Jayaraj' },
-      { name: 'Yuvan Shankar Raja', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Yuvan_Shankar_Raja_graces_Smile_Foundation%27s_Ramp_for_Champs.jpg/220px-Yuvan_Shankar_Raja_graces_Smile_Foundation%27s_Ramp_for_Champs.jpg', query: 'Yuvan Shankar Raja' },
-      { name: 'Anirudh Ravichander', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Anirudh_Ravichander.jpg/220px-Anirudh_Ravichander.jpg', query: 'Anirudh Ravichander' },
-      { name: 'D. Imman', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/D._Imman_at_the_Reel_Studio.jpg/220px-D._Imman_at_the_Reel_Studio.jpg', query: 'D. Imman' },
-      { name: 'G.V. Prakash Kumar', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/G._V._Prakash_Kumar_at_Trisha_Illana_Nayanthara_Success_Meet.jpg/220px-G._V._Prakash_Kumar_at_Trisha_Illana_Nayanthara_Success_Meet.jpg', query: 'G.V. Prakash Kumar' },
-      { name: 'Vidyasagar', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Vidyasagar_2010.jpg/220px-Vidyasagar_2010.jpg', query: 'Vidyasagar' },
-      { name: 'Devi Sri Prasad', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Devi_Sri_Prasad_2017.jpg/220px-Devi_Sri_Prasad_2017.jpg', query: 'Devi Sri Prasad' },
-      { name: 'Santhosh Narayanan', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Santhosh_Narayanan_at_Kabali_Audio_Launch.jpg/220px-Santhosh_Narayanan_at_Kabali_Audio_Launch.jpg', query: 'Santhosh Narayanan' },
-      { name: 'Hiphop Tamizha', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Hiphop_Tamizha_Adhi.jpg/220px-Hiphop_Tamizha_Adhi.jpg', query: 'Hiphop Tamizha' },
-      { name: 'Sean Roldan', photo: 'https://m.media-amazon.com/images/M/MV5BODY2MzE5OTEtZGFlNy00NWFjLWE0YWItMGIyOWQ0YjA3MDYxXkEyXkFqcGc@._V1_.jpg', query: 'Sean Roldan' },
+      { name: 'Ilaiyaraaja', photo: '/assets/directors/ilaiyaraaja.jpg', query: 'Ilaiyaraaja' },
+      { name: 'Deva', photo: '/assets/directors/deva.jpg', query: 'Deva composer' },
+      { name: 'A.R. Rahman', photo: '/assets/directors/ar-rahman.jpg', query: 'A.R. Rahman' },
+      { name: 'Harris Jayaraj', photo: '/assets/directors/harris-jayaraj.jpg', query: 'Harris Jayaraj' },
+      { name: 'Yuvan Shankar Raja', photo: '/assets/directors/yuvan-shankar-raja.jpg', query: 'Yuvan Shankar Raja' },
+      { name: 'Anirudh Ravichander', photo: '/assets/directors/anirudh.jpg', query: 'Anirudh Ravichander' },
+      { name: 'D. Imman', photo: '/assets/directors/d-imman.jpg', query: 'D. Imman' },
+      { name: 'G.V. Prakash Kumar', photo: '/assets/directors/gv-prakash.jpg', query: 'G.V. Prakash Kumar' },
+      { name: 'Vidyasagar', photo: '/assets/directors/vidyasagar.jpg', query: 'Vidyasagar' },
+      { name: 'Devi Sri Prasad', photo: '/assets/directors/devi-sri-prasad.jpg', query: 'Devi Sri Prasad' },
+      { name: 'Santhosh Narayanan', photo: '/assets/directors/santhosh-narayanan.jpg', query: 'Santhosh Narayanan' },
+      { name: 'Hiphop Tamizha', photo: '/assets/directors/hiphop-tamizha.jpg', query: 'Hiphop Tamizha' },
+      { name: 'Sean Roldan', photo: '/assets/directors/sean-roldan.jpg', query: 'Sean Roldan' },
     ];
 
     // Render Directors Grid
-    function renderDirectors() {
+      function renderDirectors() {
       const grid = document.getElementById('directorsGrid');
-      grid.innerHTML = tamilDirectors.map(director => \`
-        <div class="director-card" onclick="searchDirector('\${director.query}')">
-          <img class="director-photo" src="\${director.photo}" alt="\${director.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/200/1a1a1a/10b981?text=\${director.name.charAt(0)}'">
-          <div class="director-overlay">
-            <div class="director-name">\${director.name}</div>
-            <div class="director-role">Music Director</div>
+      grid.innerHTML = tamilDirectors.map(director => {
+        // Generate gradient background for placeholder
+        const colors = ['#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#6366f1', '#8b5cf6', '#a855f7', '#ec4899'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const initial = director.name.charAt(0);
+        
+        return \`
+          <div class="director-card" onclick="searchDirector('\${director.query}')">
+            <div class="director-photo-wrapper" style="position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:linear-gradient(135deg, \${color}33, \${color}66)">
+              <img 
+                class="director-photo" 
+                src="\${director.photo}" 
+                alt="\${director.name}" 
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+              >
+              <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:4rem;font-weight:700;color:\${color}">\${initial}</div>
+            </div>
+            <div class="director-overlay">
+              <div class="director-name">\${director.name}</div>
+              <div class="director-role">Music Director</div>
+            </div>
           </div>
-        </div>
-      \`).join('');
+        \`;
+      }).join('');
     }
 
     // State Management
