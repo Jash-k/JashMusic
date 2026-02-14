@@ -9,11 +9,6 @@
 <p align="center">
  For Music Lovers
 </p>
-
-<p align="center">
-  <a href="https://verome-api.deno.dev/">Live Demo</a>
-</p>
-
 ---
 
 ## Features
